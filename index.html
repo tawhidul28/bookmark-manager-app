@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bookmark Manager</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+      integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+  </head>
+  <body>
+    <div class="app">
+      <div class="sidebar">
+        <div class="navigation">
+          <div class="header">
+            <div class="logo">
+              <img src="images/logo-light-theme.svg" alt="" />
+            </div>
+            <div class="buttons">
+              <img src="images/icon-close.svg" alt="" />
+            </div>
+          </div>
+          <div class="section">
+            <div class="section-navigation1">
+              <div class="new-item-base pointer">
+                <div class="content active" id="home">
+                  <div class="text-and-icon">
+                    <img src="images/icon-home.svg" alt="" />
+                    <span>Home</span>
+                  </div>
+                  <!-- <div class="badge hide">1</div> -->
+                </div>
+              </div>
+              <div class="new-item-base pointer">
+                <div class="content" id="archive">
+                  <div class="text-and-icon">
+                    <img src="images/icon-archive.svg" alt="" />
+                    <span>Archive</span>
+                  </div>
+                  <!-- <div class="badge hide">1</div> -->
+                </div>
+              </div>
+            </div>
+            <div class="section-navigation2" id="sidebar-con">
+              <div class="subheading-wrapper"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="main-content">
+        <div class="main-header">
+          <div class="searchber-con">
+            <img src="images/icon-search.svg" alt="" />
+            <input
+              type="text"
+              name=""
+              id="searchBer"
+              placeholder="Search by title..."
+              class="search-box"
+            />
+          </div>
+          <div class="addbookmark-and-profile-con">
+            <div class="add-button" id="addBookmark">
+              <i class="fa-solid fa-plus"></i>
+              <span>Add Bookmark</span>
+            </div>
+
+            <img src="images/image-avatar.webp" alt="" class="avater pointer" />
+            <div class="profileMenu hide">
+              <div class="profileHeader">
+                <img src="images/image-avatar.webp" alt="Profile" />
+
+                <div class="profileInfo">
+                  <h3>Emily Carter</h3>
+                  <p>emily101@gmail.com</p>
+                </div>
+              </div>
+
+              <div class="menuItem">
+                <div class="left">
+                  <span>🎨</span>
+                  <span>Theme</span>
+                </div>
+
+                <div class="themeSwitch">
+                  <button class="active">☀</button>
+                  <button>☾</button>
+                </div>
+              </div>
+
+              <div class="menuItem">
+                <div class="left">
+                  <span>↪</span>
+                  <span>Logout</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="bookmark-list">
+          <div class="toast hide" id="toast"></div>
+          <div class="bookmark-header">
+            <span id="con-title">All bookmarks</span>
+            <div class="sort-con pointer">
+              <img src="images/icon-sort.svg" alt="" />
+              <span>Sort by</span>
+            </div>
+            <div class="sortDropdown hide">
+              <div class="sortItem active" data-sort="recently-added">
+                <span>Recently added</span>
+                <span class="check">✓</span>
+              </div>
+
+              <div class="sortItem" data-sort="recently-visited">
+                <span>Recently visited</span>
+                <span class="check">✓</span>
+              </div>
+
+              <div class="sortItem" data-sort="most-visited">
+                <span>Most visited</span>
+                <span class="check">✓</span>
+              </div>
+            </div>
+          </div>
+          <div class="archive-con" id="archiveCon"></div>
+          <div class="bookmark-con" id="bookmarkCon"></div>
+        </div>
+      </div>
+    </div>
+    <div class="archiveModel-overlay hide">
+      <div class="archiveModel">
+        <button id="archiveCancleBtnCorner" class="archiveModel-close">
+          &times;
+        </button>
+
+        <h2 class="archiveModel-title">Archive bookmark</h2>
+
+        <p class="archiveModel-text">
+          Are you sure you want to archive this bookmark?
+        </p>
+
+        <div class="archiveModel-actions">
+          <button
+            id="archiveCancleBtn"
+            class="archiveModel-btn archiveModel-cancel"
+          >
+            Cancel
+          </button>
+
+          <button
+            id="archiveConfrimBtn"
+            class="archiveModel-btn archiveModel-archive"
+          >
+            Archive
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="unArchiveModel-overlay hide">
+      <div class="unrchiveModel">
+        <button id="unArchiveCancleBtnCorner" class="archiveModel-close">
+          &times;
+        </button>
+
+        <h2 class="archiveModel-title">Unarchive bookmark</h2>
+
+        <p class="archiveModel-text">
+          Are you sure you want to Unarchive this bookmark?
+        </p>
+
+        <div class="archiveModel-actions">
+          <button
+            id="unArchiveCancleBtn"
+            class="archiveModel-btn archiveModel-cancel"
+          >
+            Cancel
+          </button>
+
+          <button
+            id="unArchiveConfrimBtn"
+            class="archiveModel-btn archiveModel-archive"
+          >
+            Unarchive
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="deleteModel-overlay hide">
+      <div class="unrchiveModel">
+        <button id="deleteCancleBtnCorner" class="archiveModel-close">
+          &times;
+        </button>
+
+        <h2 class="archiveModel-title">Delete bookmark</h2>
+
+        <p class="archiveModel-text">
+          Are you sure you want to delete this bookmark?
+        </p>
+
+        <div class="archiveModel-actions">
+          <button
+            id="deleteCancleBtn"
+            class="archiveModel-btn archiveModel-cancel"
+          >
+            Cancel
+          </button>
+
+          <button
+            id="deleteConfrimBtn"
+            class="archiveModel-btn archiveModel-archive bg-red"
+          >
+            Delete permanently
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="add-model-overlay hide">
+      <div class="modal" id="modal">
+        <button class="close" id="closeBtn">&times;</button>
+
+        <h1 id="addBookmarkTitle">Add a Bookmark</h1>
+        <p class="subtitle" id="addBookmarkSubitle">
+          Save a link with details to keep your collection organized.
+        </p>
+
+        <div class="form-group">
+          <label>Title *</label>
+          <input required type="text" id="title" />
+        </div>
+
+        <div class="form-group">
+          <label>Description *</label>
+          <textarea required maxlength="280" id="description"></textarea>
+          <div class="char-count"><span id="count">0</span>/280</div>
+        </div>
+
+        <div class="form-group">
+          <label>Website URL *</label>
+          <input required type="url" id="url" />
+        </div>
+
+        <div class="form-group">
+          <label>Tags *</label>
+          <input
+            required
+            type="text"
+            placeholder="e.g. design, learning, tools"
+            id="tag"
+          />
+        </div>
+
+        <div class="buttons">
+          <button class="cancel-btn" id="cancelBtn">Cancel</button>
+          <button class="add-btn" id="addBtn">Add Bookmark</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
