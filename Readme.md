@@ -3,11 +3,6 @@
 A modern and responsive Bookmark Manager built with **HTML, CSS, and JavaScript**. Easily save, organize, search, sort, archive, and manage your favorite websites in one place.
 
 
-## 🚀 Live Demo
-
-🔗 **Live Website:** https://tawhidul28.github.io/bookmark-manager-app/
-
-
 ## ✨ Features
 
 - ➕ Add new bookmarks
