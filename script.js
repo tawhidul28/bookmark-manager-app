@@ -13,9 +13,9 @@ const descriptionInput = document.getElementById("description");
 const urlInput = document.getElementById("url");
 const tagInput = document.getElementById("tag");
 const count = document.getElementById("count");
-const conTitle = document.getElementById("con-title")
+const conTitle = document.getElementById("con-title");
 
-let bookmarks = [];
+let allItems = [];
 let currentView = "home";
 let currentSort = "recently-added";
 
@@ -23,24 +23,33 @@ function renderApp() {
   updateFilters();
 }
 
+// profile manu section
+const avater = document.querySelector(".avater");
+const profileMenu = document.querySelector(".profileMenu");
+avater.addEventListener("click", () => {
+  profileMenu.classList.toggle("hide");
+});
+
+//get DomainName
 function getDomainName(url) {
   try {
     return new URL(url).hostname.replace(/^www\./, "");
   } catch (error) {}
 }
-
+// Date formate
 function formatDate(dateString) {
   if (!dateString) return "—";
   const date = new Date(dateString);
   return date.toLocaleDateString("en", { day: "2-digit", month: "short" });
 }
-
+// action
 searchBer.addEventListener("input", renderApp);
 addBookmark.addEventListener("click", openModal);
 closeBtn.addEventListener("click", closeModal);
 cancelBtn.addEventListener("click", closeModal);
 descriptionInput.addEventListener("input", updateCounter);
 
+// Filter Items
 function filterItems(items, searchText, selectedTags) {
   const search = searchText.trim().toLowerCase();
   return items.filter((item) => {
@@ -55,9 +64,12 @@ function filterItems(items, searchText, selectedTags) {
   });
 }
 
+// renderbookmarks
 function renderBookmark(items) {
-  currentView==="home"?conTitle.textContent = "All Bookmarks":conTitle.textContent ="Archived bookmarks"
-  
+  currentView === "home"
+    ? (conTitle.textContent = "All Bookmarks")
+    : (conTitle.textContent = "Archived bookmarks");
+
   bookmarkCon.innerHTML = "";
   if (items.length === 0) {
     bookmarkCon.innerHTML =
@@ -124,6 +136,7 @@ function renderBookmark(items) {
   });
 }
 
+// menu section
 window.addEventListener("click", (event) => {
   const toggle = event.target.closest('[data-action="toggle-menu"]');
   if (toggle) {
@@ -141,14 +154,14 @@ window.addEventListener("click", (event) => {
 });
 
 function togglePin(id) {
-  const bookmark = bookmarks.find((item) => item.id === id);
+  const bookmark = allItems.find((item) => item.id === id);
   if (!bookmark) return;
   bookmark.pinned = !bookmark.pinned;
   updateFilters();
 }
 
+// Notification section
 const toast = document.getElementById("toast");
-
 function showToast(message) {
   if (!toast) return;
   toast.textContent = message;
@@ -160,6 +173,7 @@ function showToast(message) {
   }, 2000);
 }
 
+//Copylink section
 function copyToClipboard(text) {
   const writePromise = navigator.clipboard?.writeText(text);
   if (writePromise) {
@@ -167,8 +181,9 @@ function copyToClipboard(text) {
   }
 }
 
+// Visit bookmark section
 function visitBookmark(id) {
-  const bookmark = bookmarks.find((item) => item.id === id);
+  const bookmark = allItems.find((item) => item.id === id);
   if (!bookmark) return;
   window.open(bookmark.url, "_blank");
   bookmark.visitCount = (bookmark.visitCount || 0) + 1;
@@ -176,14 +191,16 @@ function visitBookmark(id) {
   updateFilters();
 }
 
+// toggle pin
 function togglePin(id) {
-  const bookmark = bookmarks.find((item) => item.id === id);
+  const bookmark = allItems.find((item) => item.id === id);
   if (!bookmark) return;
   bookmark.pinned = !bookmark.pinned;
   updateFilters();
   showToast(`Bookmark ${bookmark.pinned ? "Pin to top" : "Unpin"}`);
 }
 
+// items sort Section
 function sortItems(items) {
   const sortedItems = [...items];
   sortedItems.sort((a, b) => {
@@ -211,6 +228,7 @@ function sortItems(items) {
   return sortedItems;
 }
 
+// sortby Section
 const sortBtn = document.querySelector(".sort-con");
 const sortDropdown = document.querySelector(".sortDropdown");
 const sortOptions = document.querySelectorAll(".sortItem");
@@ -236,20 +254,21 @@ sortOptions.forEach((option) => {
   });
 });
 
+// archive Bookmark
 const archiveConfirmModel = document.querySelector(".archiveModel-overlay");
 const archiveCancleBtn = document.getElementById("archiveCancleBtn");
 const archiveConfrimBtn = document.getElementById("archiveConfrimBtn");
 const archiveCancleBtnCorner = document.getElementById(
   "archiveCancleBtnCorner",
 );
-
+// unarchive Bokkmark
 const unArchiveConfirmModel = document.querySelector(".unArchiveModel-overlay");
 const unArchiveCancleBtn = document.getElementById("unArchiveCancleBtn");
 const unArchiveConfrimBtn = document.getElementById("unArchiveConfrimBtn");
 const unArchiveCancleBtnCorner = document.getElementById(
   "unArchiveCancleBtnCorner",
 );
-
+// Delete Bookmark
 const deleteConfirmModel = document.querySelector(".deleteModel-overlay");
 const deleteCancleBtn = document.getElementById("deleteCancleBtn");
 const deleteConfrimBtn = document.getElementById("deleteConfrimBtn");
@@ -259,7 +278,7 @@ let pendingArchiveId = null;
 let pendingDeleteId = null;
 let pendingUnarchiveId = null;
 
-// Archive
+// Archive Section
 function showArchiveConfirm(id) {
   pendingArchiveId = id;
   if (archiveConfirmModel) {
@@ -282,13 +301,13 @@ function confirmArchive() {
 }
 
 function archiveBookmark(id) {
-  const bookmark = bookmarks.find((item) => item.id === id);
+  const bookmark = allItems.find((item) => item.id === id);
   if (!bookmark) return;
   bookmark.isArchived = true;
   updateFilters();
 }
 
-// unarchive
+// unarchive Section
 function showUnarchiveConfirm(id) {
   pendingUnarchiveId = id;
   if (unArchiveConfirmModel) {
@@ -311,13 +330,13 @@ function confirmUnarchive() {
 }
 
 function unarchiveBookmark(id) {
-  const bookmark = bookmarks.find((item) => item.id === id);
+  const bookmark = allItems.find((item) => item.id === id);
   if (!bookmark) return;
   bookmark.isArchived = false;
   updateFilters();
 }
 
-// Delete
+// Delete Section
 
 function showDeleteConfirm(id) {
   pendingDeleteId = id;
@@ -334,8 +353,7 @@ function hideDeleteConfirm() {
 }
 
 function deleteBookmark(id) {
-  bookmarks = bookmarks.filter((item) => item.id !== id);
-  console.log("d");
+  allItems = allItems.filter((item) => item.id !== id);
   updateFilters();
 }
 
@@ -345,6 +363,7 @@ function confirmDelete() {
   hideDeleteConfirm();
 }
 
+// Edit Bookmark Section
 const addBookmarkTitle = document.getElementById("addBookmarkTitle");
 const addBookmarkSubitle = document.getElementById("addBookmarkSubitle");
 
@@ -352,7 +371,7 @@ function editBookmark(id) {
   addBookmarkTitle.textContent = "Edit bookmark";
   addBookmarkSubitle.textContent =
     "Update your saved link details — change the title, description, URL, or tags anytime.";
-  const bookmark = bookmarks.find((item) => item.id === id);
+  const bookmark = allItems.find((item) => item.id === id);
   if (!bookmark) return;
   closeModal();
   modal.style.display = "flex";
@@ -371,12 +390,13 @@ function clearEditMode() {
   addBtn.textContent = "Add Bookmark";
 }
 
+// Menu Actions
 function handleMenuAction(action, id) {
   if (action === "visit") {
     visitBookmark(id);
   }
   if (action === "copy-url") {
-    const bookmark = bookmarks.find((item) => item.id === id);
+    const bookmark = allItems.find((item) => item.id === id);
     if (bookmark) copyToClipboard(bookmark.url);
   }
   if (action === "pin" || action === "unpin") {
@@ -386,7 +406,7 @@ function handleMenuAction(action, id) {
     editBookmark(id);
   }
   if (action === "archive") {
-    const bookmark = bookmarks.find((item) => item.id === id);
+    const bookmark = allItems.find((item) => item.id === id);
     if (!bookmark) return;
     if (bookmark.isArchived) {
       unarchiveBookmark(id);
@@ -401,7 +421,7 @@ function handleMenuAction(action, id) {
     showDeleteConfirm(id);
   }
 }
-
+// Actions
 archiveConfrimBtn.addEventListener("click", () => {
   confirmArchive();
 });
@@ -441,7 +461,7 @@ function toggleMenu(id) {
     }
   });
 }
-
+// Archive section
 const archiveBtn = document.getElementById("archive");
 archiveBtn.addEventListener("click", () => {
   currentView = "archive";
@@ -450,7 +470,7 @@ archiveBtn.addEventListener("click", () => {
   archiveBtn.classList.add("active");
   homeBtn.classList.remove("active");
 });
-
+// Home Section
 const homeBtn = document.getElementById("home");
 homeBtn.addEventListener("click", () => {
   currentView = "home";
@@ -459,7 +479,7 @@ homeBtn.addEventListener("click", () => {
   homeBtn.classList.add("active");
   archiveBtn.classList.remove("active");
 });
-
+// Add Sideber Tag
 function renderSidebarTags(items) {
   sidebarTagCon.innerHTML = "";
   const tagCount = items.reduce((countObj, item) => {
@@ -491,38 +511,12 @@ function renderSidebarTags(items) {
   });
 }
 
-function updateFilters() {
-  const selectedTags = Array.from(
-    document.querySelectorAll(".ckBox:checked"),
-  ).map((item) => item.nextElementSibling.textContent);
-  const resetBtn = document.getElementById("resetBtn");
-
-  if (resetBtn) {
-    resetBtn.classList.toggle("hide", selectedTags.length === 0);
-    resetBtn.addEventListener("click", () => {
-      document
-        .querySelectorAll(".ckBox")
-        .forEach((ckbox) => (ckbox.checked = false));
-      updateFilters();
-    });
-  }
-
-  const viewItems =
-    currentView === "archive"
-      ? bookmarks.filter((item) => item.isArchived)
-      : bookmarks.filter((item) => !item.isArchived);
-
-  let filteredItems = filterItems(viewItems, searchBer.value, selectedTags);
-  let sortedItems = sortItems(filteredItems);
-  renderBookmark(sortedItems);
-}
-
 fetch("data.json")
   .then((response) => response.json())
   .then((data) => {
-    bookmarks = data.bookmarks;
+    allItems = data.bookmarks;
     renderApp();
-    renderSidebarTags(bookmarks);
+    renderSidebarTags(allItems);
 
     sidebarTagCon.addEventListener("change", (e) => {
       if (!e.target.matches(".ckBox")) return;
@@ -535,20 +529,20 @@ function updateCounter() {
 }
 
 const addModelOverlay = document.querySelector(".add-model-overlay");
+// Open Modal
 function openModal() {
   clearEditMode();
   addBookmarkTitle.textContent = "Add a Bookmark";
   addBookmarkSubitle.textContent =
     "Save a link with details to keep your collection organized.";
   modal.style.display = "flex";
-  // app.style.display = "none";
   addModelOverlay.classList.remove("hide");
   document.body.style.backgroundColor = "#E8F0EF";
 }
+// Close modal
 
 function closeModal() {
   modal.style.display = "none";
-  // app.style.display = "flex";
   addModelOverlay.classList.add("hide");
   document.body.style.backgroundColor = "#FFFFFF";
   titleInput.value = "";
@@ -558,6 +552,7 @@ function closeModal() {
   updateCounter();
 }
 
+// Add Bookmark section
 addBtn.addEventListener("click", () => {
   const title = titleInput.value.trim();
   const description = descriptionInput.value.trim();
@@ -575,7 +570,7 @@ addBtn.addEventListener("click", () => {
 
   const editId = addBtn.dataset.editId;
   if (editId) {
-    const bookmark = bookmarks.find((item) => item.id === editId);
+    const bookmark = allItems.find((item) => item.id === editId);
     if (bookmark) {
       bookmark.title = title;
       bookmark.description = description;
@@ -598,19 +593,71 @@ addBtn.addEventListener("click", () => {
       lastVisited: new Date().toDateString(),
     };
 
-    bookmarks.unshift(newBookmark);
+    allItems.unshift(newBookmark);
     showToast("✔️ Bookmark added successfully.");
   }
 
   renderApp();
   closeModal();
-  renderSidebarTags(bookmarks);
+  renderSidebarTags(allItems);
 });
 
+// update filter items section
+function updateFilters() {
+  const selectedTags = Array.from(
+    document.querySelectorAll(".ckBox:checked"),
+  ).map((item) => item.nextElementSibling.textContent);
+  const resetBtn = document.getElementById("resetBtn");
 
-const avater = document.querySelector(".avater")
-const profileMenu = document.querySelector(".profileMenu")
+  if (resetBtn) {
+    resetBtn.classList.toggle("hide", selectedTags.length === 0);
+    resetBtn.addEventListener("click", () => {
+      document
+        .querySelectorAll(".ckBox")
+        .forEach((ckbox) => (ckbox.checked = false));
+      updateFilters();
+    });
+  }
 
-avater.addEventListener("click",()=>{
-  profileMenu.classList.toggle("hide")
-})
+  const viewItems =
+    currentView === "archive"
+      ? allItems.filter((item) => item.isArchived)
+      : allItems.filter((item) => !item.isArchived);
+
+  let filteredItems = filterItems(viewItems, searchBer.value, selectedTags);
+  let sortedItems = sortItems(filteredItems);
+  renderBookmark(sortedItems);
+}
+
+// ResponSive
+
+const overlay = document.querySelector(".overlay");
+const sideberOpenBtn = document.querySelector(".sideberShowBtn");
+const sideberCloseBtn = document.getElementById("buttons");
+const sidebar = document.querySelector(".sidebar");
+
+sideberOpenBtn.addEventListener("click", () => {
+  sidebar.classList.add("visible");
+  overlay.classList.add("show");
+});
+
+sideberCloseBtn.addEventListener("click", closeSidebar);
+overlay.addEventListener("click", closeSidebar);
+
+function closeSidebar() {
+  sidebar.classList.remove("visible");
+  overlay.classList.remove("show");
+}
+
+window.addEventListener("resize", () => {
+  if (window.innerWidth > 1460) {
+    closeSidebar();
+  }
+  if (window.innerWidth < 768) {
+    addBookmark.innerHTML = `<i class="fa-solid fa-plus"></i>`;
+  }
+  if (window.innerWidth >= 768) {
+    addBookmark.innerHTML = `<i class="fa-solid fa-plus"></i>
+              <span>Add Bookmark</span>`;
+  }
+});
