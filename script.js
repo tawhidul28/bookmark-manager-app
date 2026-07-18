@@ -649,7 +649,8 @@ function closeSidebar() {
   overlay.classList.remove("show");
 }
 
-window.addEventListener("resize", () => {
+window.addEventListener("resize",funOfResize) 
+  function funOfResize(){
   if (window.innerWidth > 1460) {
     closeSidebar();
   }
@@ -660,4 +661,23 @@ window.addEventListener("resize", () => {
     addBookmark.innerHTML = `<i class="fa-solid fa-plus"></i>
               <span>Add Bookmark</span>`;
   }
-});
+};
+
+funOfResize()
+
+const themeLight = document.getElementById("themeBtnLight");
+const themeDark = document.getElementById("themeBtnDark");
+const logo = document.getElementById("logo")
+themeDark.addEventListener("click",()=>{
+  document.body.classList.add('dark-mode')
+  themeDark.classList.add("active")
+  themeLight.classList.remove("active")
+  logo.src = "images/logo-dark-theme.svg"
+})
+
+themeLight.addEventListener("click",()=>{
+  document.body.classList.remove('dark-mode')
+  themeDark.classList.remove("active")
+  themeLight.classList.add("active")
+  logo.src = "images/logo-light-theme.svg"
+})
